@@ -1,4 +1,8 @@
 # swoole 启动后master 进程、Manager进程、Worker进程之间的关系不是太容易懂。
+
+注意：默认是SWOOLE_PROCESS多进程模式
+如果是SWOOLE_BASE基本模式将会不一样的结果。master的reactor线程将不会生成，worker 将干reactor的活。
+
 下面写一段代码进行验证
 ```
 // swoole_server.php
