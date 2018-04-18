@@ -1,4 +1,4 @@
-#共享内存的初期化在 \swoole-src-2.1.1\swoole.c  的swoole_init()中
+# 共享内存的初期化在 \swoole-src-2.1.1\swoole.c  的swoole_init()中
 ```
 \swoole-src-2.1.1\src\core\base.c
 
@@ -23,10 +23,10 @@ void swoole_init(void)
 }
 ```
 swMemoryGlobal_new 在\swoole-src-2.1.1\src\memory\MemoryGlobal.c 中，具体就内容就不展开了。
-#总之分配完的内存结构如下图所示。
+# 总之分配完的内存结构如下图所示。
 ![image.png](https://upload-images.jianshu.io/upload_images/9076770-d6dcee4d7e40f560.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-#分配完共享内存 pool后，swoole_init函数中再分配一个SwooleGS结构体
+# 分配完共享内存 pool后，swoole_init函数中再分配一个SwooleGS结构体
 SwooleGS = SwooleG.memory_pool->alloc(SwooleG.memory_pool, sizeof(swServerGS)); 
 alloc实际执行的是
 \swoole-src-2.1.1\src\memory\MemoryGlobal.c中的swMemoryGlobal_alloc函数
@@ -60,7 +60,7 @@ static void *swMemoryGlobal_alloc(swMemoryPool *pool, uint32_t size)
 }
 
 ```
-#个人感觉共享内存的判断有点问题(也许我不对～～)
+# 个人感觉共享内存的判断有点问题(也许我不对～～)
 gm->pagesize - sizeof(swMemoryGlobal_page)
  应该是gm->pagesize - sizeof(swMemoryGlobal) -  sizeof(swMemoryPool)
  = gm->pagesize - gm->current_offset
