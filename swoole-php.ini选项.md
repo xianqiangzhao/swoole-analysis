@@ -44,7 +44,8 @@ STD_PHP_INI_ENTRY("swoole.fast_serialize", "Off", PHP_INI_ALL, OnUpdateBool, fas
 STD_PHP_INI_ENTRY("swoole.unixsock_buffer_size", "8388608", PHP_INI_ALL, OnUpdateLong, socket_buffer_size, zend_swoole_globals, swoole_globals)
 PHP_INI_END()
 ```
-0 和关闭
+php.ini 中设定的话
+0 是关闭
 1以上是打开
 
 
