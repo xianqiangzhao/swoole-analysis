@@ -19,6 +19,7 @@ $serv = new swoole_server('0.0.0.0', 9501, SWOOLE_BASE, SWOOLE_SOCK_TCP);
 PHP_METHOD(swoole_server, __construct)
 
 ```
+大概的执行步骤
   ## 1.1 如果不是cli 模式，报错
   ```
     if (strcasecmp("cli", sapi_module.name) != 0)
@@ -27,7 +28,7 @@ PHP_METHOD(swoole_server, __construct)
         RETURN_FALSE;
     }
  ```
-    ## 1.2  判断是否已经启动，也就是不能多次启动swoole_server
+  ## 1.2 判断是否已经启动，也就是不能多次启动swoole_server
    ```
     if (SwooleG.main_reactor != NULL)
     {
@@ -40,7 +41,7 @@ PHP_METHOD(swoole_server, __construct)
         RETURN_FALSE;
     }
   ```
-   ## 1.3  分配一个server 结果体对象并初期化    
+   ## 1.3  分配一个server 结构体对象并初期化    
  ```
     swServer *serv = sw_malloc(sizeof (swServer));
     swServer_init(serv);
@@ -89,19 +90,14 @@ PHP_METHOD(swoole_server, __construct)
     int swSocket_create(int type)
     
    ```
-    + bind 
+ + bind 
     ```
      \swoole-src-2.1.1\src\core\socket.c
-      int swSocket_bind(int sock, int type, char *host, int *port)
-      
+      int swSocket_bind(int sock, int type, char *host, int *port)      
     ```
     如果port 是为0 的话，会自动分配一个端口。
     然后设置socket 为 非租塞 O_NONBLOCK & O_CLOEXEC
     最后serv 对象中增加swListenPort对象。
-
-    
-
-
 
 
 
