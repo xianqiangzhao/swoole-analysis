@@ -27,7 +27,7 @@ $serv->start();
 
 ```
 
-# 1  判断回调函数是否有效
+# 1、  判断回调函数是否有效
  ```
      if (zend_parse_parameters(ZEND_NUM_ARGS()TSRMLS_CC, "zz", &name, &cb) == FAILURE)
     {
@@ -43,7 +43,7 @@ $serv->start();
         return;
     }
  ```
- # 2 根据注册事件名称把回调函数放到结构体中
+ # 2、 根据注册事件名称把回调函数放到结构体中
  ```
   char *callback_name[PHP_SERVER_CALLBACK_NUM] = {
         "Connect",
@@ -102,7 +102,7 @@ $serv->start();
         RETURN_FALSE;
     }
  ```
- # 3  调用swoole_server_port 监听端口对象的方法
+ # 3、  调用swoole_server_port 监听端口对象的方法
    当注册的事件为
     Connect，Receive，Close，Packet 时就会调用swoole_server_port对象的相应方法。
     具体为何，还没看明白。
