@@ -100,19 +100,8 @@ PHP_METHOD(swoole_server, __construct)
     最后serv 对象中增加swListenPort对象。
 ## 1.5 更新swoole_server的host，port，mode，type等信息
   ```
-    zval *server_object = getThis();
-
-#ifdef HAVE_PCRE
-    zval *connection_iterator_object;
-    SW_MAKE_STD_ZVAL(connection_iterator_object);
-    object_init_ex(connection_iterator_object, swoole_connection_iterator_class_entry_ptr);
-    zend_update_property(swoole_server_class_entry_ptr, server_object, ZEND_STRL("connections"), connection_iterator_object TSRMLS_CC);
-
-    swConnectionIterator *i = emalloc(sizeof(swConnectionIterator));
-    bzero(i, sizeof(swConnectionIterator));
-    swoole_set_object(connection_iterator_object, i);
-#endif
-
+    zval *server_object = getThis(); 
+     ...
     zend_update_property_stringl(swoole_server_class_entry_ptr, server_object, ZEND_STRL("host"), serv_host, host_len TSRMLS_CC);
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("port"), (long) serv->listen_list->port TSRMLS_CC);
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("mode"), serv->factory_mode TSRMLS_CC);
