@@ -119,51 +119,51 @@ PHP_METHOD(swoole_server, __construct)
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("type"), sock_type TSRMLS_CC);
     swoole_set_object(server_object, serv);
     ```
-## 1.6 根据swoole_server中的listen_list 生成一个swoole_server_port对象
+##  1.6 根据swoole_server中的listen_list 生成一个swoole_server_port对象
     首先swoole_server是可以监听多个端口的，也就是调用一次swoole_server->addListen（）
      就会做成一个swoole_server_port对象，这个对象存储在共享内存中，
      同时也在 server_port_list，swoole_objects结构体中保持指向。
-```
-static zval* php_swoole_server_add_port(swListenPort *port TSRMLS_DC)
-{
-     //实例化一个swoole_server_port的port_object对象。
-    zval *port_object;
-    SW_ALLOC_INIT_ZVAL(port_object);
-    object_init_ex(port_object, swoole_server_port_class_entry_ptr);
+  ```
+  static zval* php_swoole_server_add_port(swListenPort *port TSRMLS_DC)
+  {
+       //实例化一个swoole_server_port的port_object对象。
+      zval *port_object;
+      SW_ALLOC_INIT_ZVAL(port_object);
+      object_init_ex(port_object, swoole_server_port_class_entry_ptr);
 
-    //server_port_list中保持对这个对象的引用
-    server_port_list.zobjects[server_port_list.num++] = port_object;
+      //server_port_list中保持对这个对象的引用
+      server_port_list.zobjects[server_port_list.num++] = port_object;
 
-    //swoole_objects中根据这个对象的hander保持着原始的swListenPort结构体 port 对象的指向。
-      port 是在上一步骤中生成的socket,ip等等信息的共享内存结构体。
-    swoole_server_port_property *property = emalloc(sizeof(swoole_server_port_property));
-    bzero(property, sizeof(swoole_server_port_property));
-    swoole_set_property(port_object, 0, property);
-    swoole_set_object(port_object, port);
+      //swoole_objects中根据这个对象的hander保持着原始的swListenPort结构体 port 对象的指向。
+        port 是在上一步骤中生成的socket,ip等等信息的共享内存结构体。
+      swoole_server_port_property *property = emalloc(sizeof(swoole_server_port_property));
+      bzero(property, sizeof(swoole_server_port_property));
+      swoole_set_property(port_object, 0, property);
+      swoole_set_object(port_object, port);
 
-    //把port中的信息赋值给port_object的属性。
-    zend_update_property_string(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("host"), port->host TSRMLS_CC);
-    zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("port"), port->port TSRMLS_CC);
-    zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("type"), port->type TSRMLS_CC);
-    zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("sock"), port->sock TSRMLS_CC);
+      //把port中的信息赋值给port_object的属性。
+      zend_update_property_string(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("host"), port->host TSRMLS_CC);
+      zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("port"), port->port TSRMLS_CC);
+      zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("type"), port->type TSRMLS_CC);
+      zend_update_property_long(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("sock"), port->sock TSRMLS_CC);
 
-#ifdef HAVE_PCRE
-    zval *connection_iterator;
-    SW_MAKE_STD_ZVAL(connection_iterator);
-    object_init_ex(connection_iterator, swoole_connection_iterator_class_entry_ptr);
-    zend_update_property(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("connections"), connection_iterator TSRMLS_CC);
+  #ifdef HAVE_PCRE
+      zval *connection_iterator;
+      SW_MAKE_STD_ZVAL(connection_iterator);
+      object_init_ex(connection_iterator, swoole_connection_iterator_class_entry_ptr);
+      zend_update_property(swoole_server_port_class_entry_ptr, port_object, ZEND_STRL("connections"), connection_iterator TSRMLS_CC);
 
-    swConnectionIterator *i = emalloc(sizeof(swConnectionIterator));
-    bzero(i, sizeof(swConnectionIterator));
-    i->port = port;
-    swoole_set_object(connection_iterator, i);
-#endif
+      swConnectionIterator *i = emalloc(sizeof(swConnectionIterator));
+      bzero(i, sizeof(swConnectionIterator));
+      i->port = port;
+      swoole_set_object(connection_iterator, i);
+  #endif
 
-    add_next_index_zval(server_port_list.zports, port_object);
+      add_next_index_zval(server_port_list.zports, port_object);
 
-    return port_object;
-}
-```
+      return port_object;
+  }
+  ```
 # 最后
  swoole扩展中有各种类对象，它们之间有着千丝万缕的联系。
  还有在结构体中保持对各种信息的指向及存储。
