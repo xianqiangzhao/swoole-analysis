@@ -104,13 +104,18 @@ $serv->start();
  ```
  # 3、  调用swoole_server_port 监听端口对象的方法
    当注册的事件为
-    Connect，Receive，Close，Packet 时就会调用swoole_server_port对象的相应方法。
-    具体为何，还没看明白。
+    Connect，Receive，Close，Packet 时就会同时注册swoole_server_port的on的回调函数
+    也就是 swoole_server->on("Connect","backfunction")时
+    同时也执行了swoole_server_port->on("Connect","backfunction")
+    
  ```
 
     if (i < SW_SERVER_CB_onStart)
     {
-        zval *port_object = server_port_list.zobjects[0];
+         //这个port_object 就是一个swoole_server在__construct 时，调用php_swoole_server_add_port函数生成的，
+         就是实例化一个 swoole_server_port对象，里面保存着swoole_server的端口，socket ,ip 网络信息。
+        zval *port_object = server_port_list.zobjects[0]; 
+
         zval *retval = NULL;
         sw_zval_add_ref(&port_object);
         sw_zend_call_method_with_2_params(&port_object, swoole_server_port_class_entry_ptr, NULL, "on", &retval, name, cb);
