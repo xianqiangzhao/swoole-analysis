@@ -107,7 +107,7 @@ PHP_METHOD(swoole_server, __construct)
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("mode"), serv->factory_mode TSRMLS_CC);
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("type"), sock_type TSRMLS_CC);
     swoole_set_object(server_object, serv);
-    ```
+  ```
 ##  1.6 根据swoole_server中的listen_list 生成一个swoole_server_port对象
     首先swoole_server是可以监听多个端口的，也就是调用一次swoole_server->addListen（）
      就会做成一个swoole_server_port对象，这个对象存储在共享内存中，
