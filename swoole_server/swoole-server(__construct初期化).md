@@ -106,7 +106,8 @@ PHP_METHOD(swoole_server, __construct)
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("port"), (long) serv->listen_list->port TSRMLS_CC);
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("mode"), serv->factory_mode TSRMLS_CC);
     zend_update_property_long(swoole_server_class_entry_ptr, server_object, ZEND_STRL("type"), sock_type TSRMLS_CC);
-    swoole_set_object(server_object, serv);
+    swoole_set_object(server_object, serv);//把serv 结构体指针放到 swoole_objects 全局对象存储里面。
+     也就是 serv 结构体的内容，也要反应到 swoole_server类中。也通过　ｐｈｐ　代码就能输出ｓｗｏｏｌｅ_server 中的内容比较一下。
   ```
 ##  1.6 根据swoole_server中的listen_list 生成一个swoole_server_port对象
     首先swoole_server是可以监听多个端口的，也就是调用一次swoole_server->addListen（）
@@ -148,11 +149,16 @@ PHP_METHOD(swoole_server, __construct)
       swoole_set_object(connection_iterator, i);
   #endif
 
-      add_next_index_zval(server_port_list.zports, port_object);
+      add_next_index_zval(server_port_list.zports, port_object); //server_port_list是一个存放port_object 的静态结构体. 这里的意思是追加port 到zports 里面.
+
 
       return port_object;
   }
   ```
+   __construct 里面的最后一行是
+   zend_update_property(swoole_server_class_entry_ptr, server_object, ZEND_STRL("ports"), ports TSRMLS_CC);
+  也就是把 ports 追加到swoole_server的ports 属性中.
+   ports是 server_port_list.zports = ports;定义的,所以向server_port_list.zports里面追加数据就能反映到ports里面.
 # 最后
  swoole扩展中有各种类对象，它们之间有着千丝万缕的联系。
  还有在结构体中保持对各种信息的指向及存储。
