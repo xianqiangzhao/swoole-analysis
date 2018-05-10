@@ -75,11 +75,11 @@ vht = Z_ARRVAL_P(zset);  //取得传递来的参数给哈希变量
     sw_zval_add_ref(&port_object);
     sw_zval_add_ref(&zset);
     
-    //swoole_server_port 类我感觉是个摆设,没有实质用途。
-    如果Php代码里 实例化这个类的话就报错，因为__construct 定义是私有的？？
+    //swoole_server_port 是增加一个监听端口就生成一个。
+    //对于 swoole_server 来说，根据__construct会做出第一个port 对象。
+    // port 本身有自己的set 方法，事件回调函数等等。到server的addlisten函数是再提这个话题。
     sw_zend_call_method_with_1_params(&port_object, swoole_server_port_class_entry_ptr, NULL, "set", &retval, zset);
-    //下面的代码有和用，没有看出来？？
-    // 向swoole_server的setting 属性中放置这些设定的代码没有找到。回头再查一下。
+   // php_swoole_read_init_property 是身居读写属性，如果为NULL的话就设定。
     zval *zsetting = php_swoole_read_init_property(swoole_server_class_entry_ptr, getThis(), ZEND_STRL("setting") TSRMLS_CC);
     sw_php_array_merge(Z_ARRVAL_P(zsetting), Z_ARRVAL_P(zset));
     // 销毁 zset 
