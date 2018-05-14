@@ -11,7 +11,7 @@ HashTable *vht;
 swServer *serv = swoole_get_object(zobject); //获取serv 结构体,在__construct 中
 swoole_set_object 存储进入的。
 
-vht = Z_ARRVAL_P(zset);  //取得传递来的参数给哈希变量
+vht = Z_ARRVAL_P(zset);  //取得传递来的参数 哈希变量
 
 ```
  //chroot设定
@@ -87,8 +87,8 @@ vht = Z_ARRVAL_P(zset);  //取得传递来的参数给哈希变量
 
 ```
 
-主要是判断传递过来的zval 数组中是否有对应的key ，有的话做类型转换，取出并
+swoole_server->on 主要是判断传递过来的zval 数组中是否有对应的key ，有的话做类型转换，取出并
 赋值给SwooleG，或serv 中。
-因为是zval 类型，所以调用了zend api。
+因为是zval 类型，所以调用了zend api 进行类型转化，查找等等。
 
  
