@@ -58,8 +58,10 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
    ```
    这个函数是非常复杂的，所有的进程创建，套接字监听都在这个方法完成。
    swoole_server->start() 后就阻塞在这里了，直到服务停止。
+   
     // start check
     检查回调函数设置是否OK，各种设置参数是否OK并进行校正。
+
     ```
     swServer_start_check(serv) 
    ```
