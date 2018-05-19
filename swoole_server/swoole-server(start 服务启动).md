@@ -51,10 +51,10 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
    > factory->end = swFactoryProcess_end;
 
  ## 启动start
-	```
+```
 	\swoole-src-2.1.1\src\network\Server.c
    swServer_start(serv);
-	```
+```
 
    这个函数是非常复杂的，所有的进程创建，套接字监听都在这个方法完成。
    swoole_server->start() 后就阻塞在这里了，直到服务停止。
@@ -62,69 +62,69 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     // start check
     检查回调函数设置是否OK，各种设置参数是否OK并进行校正。
 
-    ```
+```
     swServer_start_check(serv) 
-	```
+```
 
     //log初期化  
 
-    ```
+```
     if (SwooleG.log_file)
     {
         swLog_init(SwooleG.log_file);
     }
-    ```
+```
 
    //如果设定启动守护模式,进入守护模式
 
-    ```
+ ```
     if (daemon(0, 1) < 0)
         {
             return SW_ERR;
         }
-    ```
+```
 
    // master  pid 设定
 
-	```
+```
     SwooleGS->master_pid = getpid();
     SwooleGS->now = SwooleStats->start_time = time(NULL);
-	```
+```
 
    // worker 进程共享内存结构分配   
     因为要对所有进程透明，所以要从共享内存上申请内存
 
-    ```
+```
        serv->workers = SwooleG.memory_pool->alloc(SwooleG.memory_pool, serv->worker_num * sizeof(swWorker));
-	```
+```
 
    //store to swProcessPool object
     processpoll 是用来统一管理进程的结构体
 
-    ```
+```
     SwooleGS->event_workers.workers = serv->workers;
     SwooleGS->event_workers.worker_num = serv->worker_num;
 	for (i = 0; i < serv->worker_num; i++)
     {
         SwooleGS->event_workers.workers[i].pool = &SwooleGS->event_workers;
     }
-    ```
+ ```
 
     //factory start
     这个方法是核心的一个，manger 进程，worker 进程都阻塞在这里，不返回。
 
-    ```
+```
     if (factory->start(factory) < 0) // swFactoryProcess_start
     {
         return SW_ERR;
     }
-    ```
+```
     
     //主进程 信号初期化signal Init
 
-    ```
+```
     swServer_signal_init(serv);
-	```
+```
 
     // 创建线程，事件循环，不返回。
 
@@ -137,14 +137,14 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     {
         ret = swServer_start_proxy(serv);  //多进程模式，默认会执行这个函数
     }
-	```
+```
 
    本篇就说这么多，没有办法对各个函数一一展开。
    接下来，会分别说明各个进程创建的过程。
-	* 1、manager 创建
-	* 2、worker 创建
-	* 3、task 创建
-	* 4、线程创建
+* 1、manager 创建
+* 2、worker 创建
+* 3、task 创建
+* 4、线程创建
 
 
 
