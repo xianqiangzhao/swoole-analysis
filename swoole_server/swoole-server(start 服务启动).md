@@ -51,12 +51,12 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
    > factory->end = swFactoryProcess_end;
 
  ## 启动start
-   ```
+	```
    \swoole-src-2.1.1\src\network\Server.c
    swServer_start(serv);
 
 	```
-	
+
    这个函数是非常复杂的，所有的进程创建，套接字监听都在这个方法完成。
    swoole_server->start() 后就阻塞在这里了，直到服务停止。
 
