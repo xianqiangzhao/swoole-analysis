@@ -63,7 +63,7 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     ```
     swServer_start_check(serv) 
    ```
-   
+
     //log初期化  
 
     ```
