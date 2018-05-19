@@ -128,7 +128,7 @@ swServer_start(serv);
 
   // 创建线程，事件循环，不返回。
 
-	```
+```
     if (serv->factory_mode == SW_MODE_SINGLE) //基本模式
     {
         ret = swReactorProcess_start(serv);
