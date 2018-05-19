@@ -52,21 +52,21 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
 
  ## 启动start
 ```
-	\swoole-src-2.1.1\src\network\Server.c
-   swServer_start(serv);
+\swoole-src-2.1.1\src\network\Server.c
+swServer_start(serv);
 ```
 
    这个函数是非常复杂的，所有的进程创建，套接字监听都在这个方法完成。
    swoole_server->start() 后就阻塞在这里了，直到服务停止。
 
-    // start check
-    检查回调函数设置是否OK，各种设置参数是否OK并进行校正。
+  // start check
+  检查回调函数设置是否OK，各种设置参数是否OK并进行校正。
 
 ```
     swServer_start_check(serv) 
 ```
 
-    //log初期化  
+//log初期化  
 
 ```
     if (SwooleG.log_file)
@@ -110,8 +110,8 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     }
  ```
 
-    //factory start
-    这个方法是核心的一个，manger 进程，worker 进程都阻塞在这里，不返回。
+   //factory start
+   这个方法是核心的一个，manger 进程，worker 进程都阻塞在这里，不返回。
 
 ```
     if (factory->start(factory) < 0) // swFactoryProcess_start
@@ -120,13 +120,13 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     }
 ```
     
-    //主进程 信号初期化signal Init
+   //主进程 信号初期化signal Init
 
 ```
     swServer_signal_init(serv);
 ```
 
-    // 创建线程，事件循环，不返回。
+  // 创建线程，事件循环，不返回。
 
 	```
     if (serv->factory_mode == SW_MODE_SINGLE) //基本模式
@@ -139,8 +139,8 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     }
 ```
 
-   本篇就说这么多，没有办法对各个函数一一展开。
-   接下来，会分别说明各个进程创建的过程。
+  本篇就说这么多，没有办法对各个函数一一展开。
+  接下来，会分别说明各个进程创建的过程。
 * 1、manager 创建
 * 2、worker 创建
 * 3、task 创建
