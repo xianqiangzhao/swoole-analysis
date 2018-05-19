@@ -8,6 +8,7 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
 具体说明请参照 <https://wiki.swoole.com/wiki/page/353.html>
 
 下面来介绍一下多进程模式的启动过程。
-
+# 启动后的表示图
+  <img>https://github.com/xianqiangzhao/swoole-analysis/blob/master/image/process.png?raw=true</img>
 
 
