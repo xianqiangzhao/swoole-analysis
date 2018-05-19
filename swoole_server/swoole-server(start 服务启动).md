@@ -62,6 +62,7 @@ swoole_server->start 是swoole 的比较复杂的一个函数，
     检查回调函数设置是否OK，各种设置参数是否OK并进行校正。
     ```
     swServer_start_check(serv) 
+   ```
    
     //log初期化  
 
