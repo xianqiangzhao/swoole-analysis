@@ -139,12 +139,8 @@ swServer_start(serv);
     }
 ```
 
-  本篇就说这么多，没有办法对各个函数一一展开。  
-  接下来，会分别说明各个进程创建的过程。  
- 1、manager 创建  
- 2、worker 创建  
- 3、task 创建  
- 4、线程创建  
 
+# 启动过程中的函数调用过程
+ ![](https://raw.githubusercontent.com/xianqiangzhao/swoole-analysis/master/image/swoole_server_func.jpg)
 
 
